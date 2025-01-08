@@ -1,6 +1,7 @@
 import pytest
 from oop.staff import Staff
 from oop.classroom_staff import ClassroomStaff
+from oop.staff import FireError
 
 class TestStaffProperties:
     def test_initial_name_takes_argument(self):
@@ -55,9 +56,11 @@ class TestStaffMethods:
         niamh.increase_salary(24000)
         assert niamh.salary == 124000
     
-    @pytest.mark.skip
     def test_increase_salary_raises_exception_for_incorrect_input(self):
-        pass
+        niamh = Staff('niamh','mentor', 'classroom', 22, 100000)
+        
+        with pytest.raises(TypeError, match= "Please make sure you have inserted a number"):
+            niamh.increase_salary('four_pounds')
 
     def test_fire_fires_with_hr_approval(self):
         niamh = Staff('niamh','mentor', 'classroom', 22, 124000)
@@ -66,11 +69,15 @@ class TestStaffMethods:
         niamh.fire(hr_report)
         assert niamh.employed_at_NC == False
 
-    @pytest.mark.skip
+    
     def test_fire_raises_exception_when_hr_approval_is_false(self):
-        pass
+        niamh = Staff('niamh','mentor', 'classroom', 22, 124000)
+        assert niamh.employed_at_NC == True
+        hr_report = {"approved": False}
+        with pytest.raises(FireError, match="No approval!!!"):
+            niamh.fire(hr_report)
 
-@pytest.mark.skip
+
 class TestClassroomStaffProperties:
     def test_classroom_staff_initial_name_takes_argument_inherited_from_staff(self):
         niamh = ClassroomStaff('niamh', 'mentor', ['python'], 22, 123000)
@@ -100,7 +107,7 @@ class TestClassroomStaffProperties:
         niamh = ClassroomStaff('niamh', 'mentor', ['python'], 22, 123000)
         assert niamh.title == 'junior developer'
 
-@pytest.mark.skip
+
 class TestClassroomStaffMethods:
     def test_add_overtime_increases_overtime_hours(self):
         niamh = ClassroomStaff('niamh', 'mentor', ['python'], 22, 123000)
@@ -115,3 +122,27 @@ class TestClassroomStaffMethods:
         assert niamh.overtime == 3
         niamh.add_overtime(5)
         assert niamh.overtime == 8
+
+    def test_overtime_paid_method_reduces_overtime_when_hours_paid_passed_in(self):
+        niamh = ClassroomStaff('niamh', 'mentor', ['python'], 22, 123000)
+        niamh.add_overtime(8)
+        assert niamh.overtime == 8
+        niamh.overtime_paid(4)
+        assert niamh.overtime == 4
+
+    def test_change_title_method_changes_title_to_mid_level_develop_when_salary_increased(self):
+        niamh = ClassroomStaff('niamh', 'mentor', ['python'], 22, 30000)
+        niamh.increase_salary(10000)
+        niamh.change_title()
+        assert niamh.salary == 40000
+        assert niamh.title == 'mid-level developer'
+
+    def test_change_title_method_changes_title_to_senior_develop_when_salary_increased(self):
+        niamh = ClassroomStaff('niamh', 'mentor', ['python'], 22, 30000)
+        niamh.increase_salary(25000)
+        niamh.change_title()
+        assert niamh.salary == 55000
+        assert niamh.title == 'senior developer'
+        assert niamh.role == 'mentor'
+
+

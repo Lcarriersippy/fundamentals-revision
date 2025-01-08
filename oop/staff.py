@@ -1,3 +1,6 @@
+class FireError(Exception):
+     pass
+
 class Staff():
     def __init__(self, name, role, department, working_hours = 34, salary = 26000):
         self.name = name
@@ -12,8 +15,15 @@ class Staff():
         self.working_hours = new_hours
 
     def increase_salary(self, addition_to_salary):
-            self.salary += addition_to_salary
+            try:
+                self.salary += addition_to_salary
+                
+            except TypeError:
+                raise TypeError("Please make sure you have inserted a number")
+                 
 
     def fire(self, hr_report):
         if(hr_report['approved']):
             self.employed_at_NC = False
+        else:
+            raise FireError("No approval!!!")

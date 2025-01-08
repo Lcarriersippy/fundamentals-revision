@@ -10,3 +10,13 @@ class ClassroomStaff(Staff):
 
     def add_overtime(self, overtime_hours):
         self.overtime += overtime_hours
+
+    def overtime_paid(self, hours_paid):
+        self.overtime -= hours_paid
+
+    def change_title(self):
+        if self.salary >= 36000 and self.salary < 50000 :
+            self.title = 'mid-level developer'
+        elif self.salary >= 50000:
+            self.title = 'senior developer'
+        
