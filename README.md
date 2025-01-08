@@ -4,3 +4,4 @@ This was created by Niamh in order to revise some of the topics in the Python Fu
 
 Current Topics available: 
 
+- Pure Functions
