@@ -6,3 +6,4 @@ Current Topics available:
 
 - Pure Functions
 - Object Oriented Programming
+- Recursion
